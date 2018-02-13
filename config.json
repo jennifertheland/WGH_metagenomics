@@ -1,0 +1,9 @@
+{
+	 ctgfasta_path : 	 /assembly/seed_contigs/contig.fa,
+	 reads_ctg_bam_path:  /aligned_reads.idba_contigs.bam,
+	 input_fqs:  /interleaved_R1_R2.fastq,
+	 cluster_settings:  {
+		 cluster_type: multiprocessing,
+		 processes: 4
+	}
+}
