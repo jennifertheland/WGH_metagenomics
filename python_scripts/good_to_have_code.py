@@ -20,26 +20,32 @@ def main():
 
         out_str = inf.readline()
         counter = 0
+        sum_of_contigs = 0
+        number_of_contigs = 0
 
         for line in inf:
 
             if line.startswith('>'):
 
+                number_of_contigs += 1
+
                 if counter != 0:
 
                     out_str += str(counter) + '\n'
                     outf.write(out_str)
-
+                    sum_of_contigs += counter
                     out_str = ''
                     counter = 0
                     out_str += line
+
                 else:
                     continue
 
             else:
 
                 counter += len(line)
-
+        mean_len_of_contigs = sum_of_contigs /number_of_contigs
+        outf.write('Mean length of contigs: ' + str(mean_len_of_contigs))
 
         #     counter += 1
         #     pg_bar_read_file.progressBarUpdater(counter)
