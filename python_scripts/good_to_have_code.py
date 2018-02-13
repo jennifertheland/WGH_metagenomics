@@ -18,7 +18,7 @@ def main():
         # counter = 0
         # pg_bar_read_file = Progress("Reading file ", 1, number_of_lines)
 
-        out_str = inf.readline()
+        out_str = inf.readline().replace('\n','')
         counter = 0
         sum_of_contigs = 0
         number_of_contigs = 0
@@ -31,12 +31,12 @@ def main():
 
                 if counter != 0:
 
-                    out_str += str(counter) + '\n'
+                    out_str += '\t' + str(counter) + '\n'
                     outf.write(out_str)
                     sum_of_contigs += counter
                     out_str = ''
                     counter = 0
-                    out_str += line
+                    out_str += line.replace('\n','')
 
                 else:
                     continue
