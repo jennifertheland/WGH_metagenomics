@@ -45,7 +45,7 @@ def main():
 
                 counter += len(line)
         mean_len_of_contigs = sum_of_contigs /number_of_contigs
-        outf.write('Total length of contigs: ' +str(sum_of_contigs))
+        outf.write('Total length of contigs: ' +str(sum_of_contigs) + '\n')
         outf.write('Mean length of contigs: ' + str(mean_len_of_contigs) + '\n')
 
         #     counter += 1
