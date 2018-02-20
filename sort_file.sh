@@ -67,21 +67,21 @@ while read first_line; read second_line; read third_line; read fourth_line
         echo "$first_line" "$second_line" "$third_line" "$fourth_line" >> temp.fastq;
     done
 
-echo "### Read records collapsed into one line - DONE"
+echo "Read records collapsed into one line - DONE"
 
 cat temp.fastq | sort -d -k2,2 -k1,1 > temp2.fastq
 
-echo "### Reads sorted according to barcode sequence - DONE"
+echo "Reads sorted according to barcode sequence - DONE"
 
 rm temp.fastq
 
-echo "### Initiating reformatting to .fastq format."
+echo "Initiating reformatting to .fastq format."
 
 cat temp2.fastq |
 
 python $wgh_path/python_scripts/sort_tagged_file.py temp2.fastq $ARG2
 
-echo "### Sorting - DONE"
+echo "Sorting - DONE"
 
 rm temp2.fastq
 

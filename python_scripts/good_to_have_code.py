@@ -18,35 +18,29 @@ def main():
         # counter = 0
         # pg_bar_read_file = Progress("Reading file ", 1, number_of_lines)
 
-        out_str = inf.readline().replace('\n','')
         counter = 0
-        sum_of_contigs = 0
-        number_of_contigs = 0
+        temp = ''
 
         for line in inf:
 
             if line.startswith('>'):
 
-                number_of_contigs += 1
-
                 if counter != 0:
 
-                    out_str += '\t' + str(counter) + '\n'
-                    outf.write(out_str)
-                    sum_of_contigs += counter
-                    out_str = ''
+                    temp += '\t' + str(counter)
+                    outf.write(temp + '\n')
                     counter = 0
-                    out_str += line.replace('\n','')
+                    temp =''
 
-                else:
-                    continue
+                temp += line
 
             else:
 
                 counter += len(line)
-        mean_len_of_contigs = sum_of_contigs /number_of_contigs
-        outf.write('Total length of contigs: ' +str(sum_of_contigs) + '\n')
-        outf.write('Mean length of contigs: ' + str(mean_len_of_contigs) + '\n')
+
+        temp += '\t' + str(counter)
+        outf.write(temp + '\n')
+
 
         #     counter += 1
         #     pg_bar_read_file.progressBarUpdater(counter)
