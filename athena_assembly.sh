@@ -168,6 +168,6 @@ printf "STEP 7 complete. "
 #### STEP 8 ####
 # RUN ATHENA
 
-printf "STEP 8 - Running Athena-meta"
-athena-meta $dir_of_files/config.json
-printf "STEP 8 complete. Genome assembled."
+#printf "STEP 8 - Running Athena-meta"
+#athena-meta $dir_of_files/config.json
+#printf "STEP 8 complete. Genome assembled."
