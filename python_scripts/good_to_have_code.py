@@ -3,49 +3,39 @@
 
 def main():
 
-    import sys, time
+    import sys, time, pysam
     global sys, time
 
     ArgumentParser()
     configureLogging('info')
 
+    infile = pysam.AlignmentFile(args.name_1, 'rb')
 
-    with open(args.name_1,'r') as inf, open(args.name_2,'w') as outf:
+    barcode_id_to_number_of_reads=dict()
 
-        logging.info('files read successfully')
+    for read in infile.fetch(until_eof=True):
 
-        # number_of_lines = lineCounter(args.name_of_argument)
-        # counter = 0
-        # pg_bar_read_file = Progress("Reading file ", 1, number_of_lines)
+        barcode_id = read.split()[-9]
+        try:
+            number_of_reads = barcode_id_to_number_of_reads[barcode_id]
+            barcode_id_to_number_of_reads[barcode_id] = number_of_reads + 1
+        except KeyError:
+            barcode_id_to_number_of_reads[barcode_id] = 1
 
-        counter = 0
-        temp = ''
+    infile.close()
 
-        for line in inf:
+    infile = pysam.AlignmentFile(args.name_1, 'rb')
+    out = pysam.AlignmentFile(args.name_2, 'wb', template=infile)
 
-            if line.startswith('>'):
+    for read in infile:
 
-                if counter != 0:
+        barcode_id = read.split()[-9]
 
-                    temp += '\t' + str(counter)
-                    outf.write(temp + '\n')
-                    counter = 0
-                    temp =''
+        if barcode_id_to_number_of_reads[barcode_id] > 20:
+            out.write(read)
 
-                temp += line
-
-            else:
-
-                counter += len(line)
-
-        temp += '\t' + str(counter)
-        outf.write(temp + '\n')
-
-
-        #     counter += 1
-        #     pg_bar_read_file.progressBarUpdater(counter)
-        #
-        # pg_bar_read_file.terminteProgressbar()
+    infile.close()
+    out.close()
 
 def lineCounter(infile):
 
@@ -56,7 +46,6 @@ def lineCounter(infile):
             counter += 1
 
     return counter
-
 
 
 class Progress():
