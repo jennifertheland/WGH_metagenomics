@@ -10,42 +10,17 @@ def main():
     configureLogging('info')
 
     with open(args.name_1,'r') as inf, open(args.name_2,'w') as out:
-        prev_seq = ''
-        read_count = 0
-        same_bc = False
 
         for line in inf:
 
-            line_list = line.split()
-
-
-            if line.startswith("Cluster"):
-
-
-                out.write('Barcode seq: ' + prev_seq + '\t # reads: ' + str(read_count * 2) + '\n')
-
-                out.write(line)
-
-
-            elif prev_seq != line_list[2] and prev_seq != '':
-
-                if prev_seq != 'sequence:':
-
-                    out.write('Barcode seq: ' + prev_seq + '\t # reads: ' + str(read_count * 2) + '\n')
-
-                read_count = int(line_list[-1])
-
-
+            if line.startswith('Cluster'):
+                consensus = line.split()[-1]
+                if consensus.startswith('A'):
+                    out.write('Barcode clusters to be merged: \n')
+                else:
+                    out.write('Barcode clusters to be merged: \n' + 'Barcode seq: ' + consensus + '\t\n')
             else:
-                same_bc = True
-                read_count += int(line_list[-1])
-
-            prev_seq = line_list[2]
-
-
-
-
-        out.write('Barcode seq: ' + prev_seq + '\t # reads: ' + str(read_count*2) + '\n')
+                out.write(line)
 
 def lineCounter(infile):
 
