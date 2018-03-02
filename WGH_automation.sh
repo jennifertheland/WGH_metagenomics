@@ -485,36 +485,36 @@ then
     fi
 
     printf "`date`"'\tBarcode clustering done\n'
-    printf "`date`"'\tBam tagging\n'
+#    printf "`date`"'\tBam tagging\n'
 
     # Tagging bamfile
-    (python3 $wgh_path'/python scripts/tag_bam.py' \
-        $file_name".sort.filt.bam" \
-        $path"/"$N_string".clstr" \
-        $file_name".sort.filt.tag.bam") 2>$path"/tag_bam.stderr"
-    if ! $keep_logiles
-    then
-        rm $path"/tag_bam.stderr"
-        rm $file_name".sort.filt.tag.log"
-    fi
-    if $remove
-    then
-        rm $file_name".sort.filt.bam"
-    fi
-
-
-    if $mailing
-    then
-        echo '3_clustering finished '$(date) | mail -s $path $email
-    fi
-    printf "`date`"'\tBam tagging done\n'
-
-fi
-
-if (( "$current_step" == "$end_step" ))
-then
-    continue=false
-fi
+#    (python3 $wgh_path'/python scripts/tag_bam.py' \
+#        $file_name".sort.filt.bam" \
+#        $path"/"$N_string".clstr" \
+#        $file_name".sort.filt.tag.bam") 2>$path"/tag_bam.stderr"
+#    if ! $keep_logiles
+#    then
+#        rm $path"/tag_bam.stderr"
+#        rm $file_name".sort.filt.tag.log"
+#    fi
+#    if $remove
+#    then
+#        rm $file_name".sort.filt.bam"
+#    fi
+#
+#
+#    if $mailing
+#    then
+#        echo '3_clustering finished '$(date) | mail -s $path $email
+#    fi
+#    printf "`date`"'\tBam tagging done\n'
+#
+#fi
+#
+#if (( "$current_step" == "$end_step" ))
+#then
+#    continue=false
+#fi
 
 # 4. ###################################################################################
 
