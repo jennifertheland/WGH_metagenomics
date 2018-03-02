@@ -509,12 +509,12 @@ then
 #    fi
 #    printf "`date`"'\tBam tagging done\n'
 #
-#fi
-#
-#if (( "$current_step" == "$end_step" ))
-#then
-#    continue=false
-#fi
+fi
+
+if (( "$current_step" == "$end_step" ))
+then
+    continue=false
+fi
 
 # 4. ###################################################################################
 
