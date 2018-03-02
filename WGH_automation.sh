@@ -164,7 +164,7 @@ wgh_path=$(dirname "$0")
 # Loading PATH:s to software
 #   - reference:            $bowtie2_reference
 #   - Picard tools:         $picard_path
-. $wgh_path'/paths.txt'
+# . $wgh_path'/paths.txt'
 
 # output folder
 path=$ARG3
