@@ -440,7 +440,7 @@ then
 
     # Barcode extraction
     pigz -d $file_name".trimmed.fastq.gz"
-    (python3 $wgh_path'/python scripts/cdhit_prep.py' \
+    (python3 $wgh_path'/python_scripts/cdhit_prep.py' \
         $file_name".trimmed.fastq" \
         $path"/unique_bc" \
         -r $index_nucleotides\
