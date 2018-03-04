@@ -123,7 +123,7 @@ printf '\n#1 START PROCESSING \n'
 #
 # Start of script
 #
-
+#
 mkdir -p $path
 
 # Trim away E handle on R1 5'. Also removes reads shorter than 85 bp.
@@ -136,16 +136,16 @@ cutadapt -g ^CAGTTGATCATCAGCAGGTAATCTGG \
     --discard-untrimmed -e 0.2 -m 65 > $path/trimming.txt # Tosses reads shorter than len(e+bc+handle+TES)
 
 printf '#2 TRIMMED E \n'
-pigz $file_name".h1.fastq"
-pigz $file_name2".h1.fastq"
+pigz $name".h1.fastq"
+pigz $name2".h1.fastq"
 
 # Get DBS using UMI-Tools -> _BDHVBDVHBDVHBDVH in header.
 umi_tools extract --stdin=$file_name".h1.fastq" \
     --stdout=$file_name".h1.bc.fastq" \
     --bc-pattern=NNNNNNNNNNNNNNNNNNNN --bc-pattern2= \
-    --read2-in=$ARG2 \
+    --read2-in=$file_name2".h1.fastq" \
     --read2-out=$file_name2".h1.bc.fastq" \
-    -L $file_name".h1.bc.txt"
+    -L $name".h1.bc.txt"
 
 # Remove
 if $remove
