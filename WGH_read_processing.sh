@@ -95,7 +95,7 @@ wgh_path=$(dirname "$0")
 # Loading PATH:s to software
 #   - reference:            $bowtie2_reference
 #   - Picard tools:         $picard_path
-. $wgh_path'/paths.txt'
+# . $wgh_path'/paths.txt'
 
 # output folder
 path=$ARG3
@@ -140,7 +140,7 @@ pigz $file_name".h1.fastq"
 pigz $file_name2".h1.fastq"
 
 # Get DBS using UMI-Tools -> _BDHVBDVHBDVHBDVH in header.
-umi_tools extract --stdin=$ARG1 \
+umi_tools extract --stdin=$ARG1".h1.fastq" \
     --stdout=$file_name".h1.bc.fastq" \
     --bc-pattern=NNNNNNNNNNNNNNNNNNNN --bc-pattern2= \
     --read2-in=$ARG2 \
