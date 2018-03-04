@@ -138,8 +138,8 @@ cutadapt -g ^CAGTTGATCATCAGCAGGTAATCTGG \
     --discard-untrimmed -e 0.2 -m 65 > $path/trimming.txt # Tosses reads shorter than len(e+bc+handle+TES)
 
 printf '#2 TRIMMED E \n'
-pigz $name".h1.fastq"
-pigz $name2".h1.fastq"
+#pigz $name".h1.fastq"
+#pigz $name2".h1.fastq"
 
 # Get DBS using UMI-Tools -> _BDHVBDVHBDVHBDVH in header.
 umi_tools extract --stdin=$name".h1.fastq" \
@@ -157,16 +157,16 @@ then
 fi
 
 # Compress
-pigz $name".h1.bc.fastq"
-pigz $name2".h1.bc.fastq"
+#pigz $name".h1.bc.fastq"
+#pigz $name2".h1.bc.fastq"
 printf '#2 GOT DBS USING UMI-TOOLs \n'
 
 #Cut TES from 5' of R1. TES=AGATGTGTATAAGAGACAG. Discard untrimmed.
 cutadapt -g AGATGTGTATAAGAGACAG -o $name".h1.bc.h2.fastq" \
     -j $processors \
     -p $name2".h1.bc.h2.fastq" \
-    $name".h1.bc.fastq.gz" \
-    $name2".h1.bc.fastq.gz" \
+    $name".h1.bc.fastq" \
+    $name2".h1.bc.fastq" \
     --discard-untrimmed -e 0.2  >> $path/trimming.txt
 
 # Remove
@@ -177,8 +177,8 @@ then
 fi
 
 # Compress
-pigz $name".h1.bc.h2.fastq"
-pigz $name2".h1.bc.h2.fastq"
+#pigz $name".h1.bc.h2.fastq"
+#pigz $name2".h1.bc.h2.fastq"
 printf '#3 TRIMMED TES1 \n'
 
 #Cut TES' from 3' for R1 and R2. TES'=CTGTCTCTTATACACATCT
@@ -187,8 +187,8 @@ cutadapt -a CTGTCTCTTATACACATCT -A CTGTCTCTTATACACATCT \
     -o $name".trimmed.fastq" \
 	-p $name2".trimmed.fastq" \
 	-m 25 \
-	$name".h1.bc.h2.fastq.gz" \
-	$name2".h1.bc.h2.fastq.gz" \
+	$name".h1.bc.h2.fastq" \
+	$name2".h1.bc.h2.fastq" \
 	-e 0.2  >> $path/trimming.log
 
 # Remove
@@ -199,8 +199,8 @@ then
 fi
 
 # Compress/remove
-pigz $name".trimmed.fastq"
-pigz $name2".trimmed.fastq"
+#pigz $name".trimmed.fastq"
+#pigz $name2".trimmed.fastq"
 
 if $mailing
     then
