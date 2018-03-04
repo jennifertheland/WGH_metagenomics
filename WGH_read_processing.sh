@@ -129,8 +129,8 @@ mkdir -p $path
 # Trim away E handle on R1 5'. Also removes reads shorter than 85 bp.
 cutadapt -g ^CAGTTGATCATCAGCAGGTAATCTGG \
     -j $processors \
-    -o $file_name".h1.fastq" \
-    -p $file_name2".h1.fastq" \
+    -o $name".h1.fastq" \
+    -p $name2".h1.fastq" \
     $ARG1 \
     $ARG2 \
     --discard-untrimmed -e 0.2 -m 65 > $path/trimming.txt # Tosses reads shorter than len(e+bc+handle+TES)
@@ -140,65 +140,65 @@ pigz $name".h1.fastq"
 pigz $name2".h1.fastq"
 
 # Get DBS using UMI-Tools -> _BDHVBDVHBDVHBDVH in header.
-umi_tools extract --stdin=$file_name".h1.fastq" \
-    --stdout=$file_name".h1.bc.fastq" \
+umi_tools extract --stdin=$name".h1.fastq" \
+    --stdout=$name".h1.bc.fastq" \
     --bc-pattern=NNNNNNNNNNNNNNNNNNNN --bc-pattern2= \
-    --read2-in=$file_name2".h1.fastq" \
-    --read2-out=$file_name2".h1.bc.fastq" \
+    --read2-in=$name2".h1.fastq" \
+    --read2-out=$name2".h1.bc.fastq" \
     -L $name".h1.bc.txt"
 
 # Remove
 if $remove
 then
-    rm $file_name".h1.fastq.gz"
-    rm $file_name2".h1.fastq.gz"
+    rm $name".h1.fastq.gz"
+    rm $name2".h1.fastq.gz"
 fi
 
 # Compress
-pigz $file_name".h1.bc.fastq"
-pigz $file_name2".h1.bc.fastq"
+pigz $name".h1.bc.fastq"
+pigz $name2".h1.bc.fastq"
 printf '#2 GOT DBS USING UMI-TOOLs \n'
 
 #Cut TES from 5' of R1. TES=AGATGTGTATAAGAGACAG. Discard untrimmed.
-cutadapt -g AGATGTGTATAAGAGACAG -o $file_name".h1.bc.h2.fastq" \
+cutadapt -g AGATGTGTATAAGAGACAG -o $name".h1.bc.h2.fastq" \
     -j $processors \
-    -p $file_name2".h1.bc.h2.fastq" \
-    $file_name".h1.bc.fastq.gz" \
-    $file_name2".h1.bc.fastq.gz" \
+    -p $name2".h1.bc.h2.fastq" \
+    $name".h1.bc.fastq.gz" \
+    $name2".h1.bc.fastq.gz" \
     --discard-untrimmed -e 0.2  >> $path/trimming.txt
 
 # Remove
 if $remove
 then
-    rm $file_name".h1.bc.fastq.gz"
-    rm $file_name2".h1.bc.fastq.gz"
+    rm $name".h1.bc.fastq.gz"
+    rm $name2".h1.bc.fastq.gz"
 fi
 
 # Compress
-pigz $file_name".h1.bc.h2.fastq"
-pigz $file_name2".h1.bc.h2.fastq"
+pigz $name".h1.bc.h2.fastq"
+pigz $name2".h1.bc.h2.fastq"
 printf '#3 TRIMMED TES1 \n'
 
 #Cut TES' from 3' for R1 and R2. TES'=CTGTCTCTTATACACATCT
 cutadapt -a CTGTCTCTTATACACATCT -A CTGTCTCTTATACACATCT \
     -j $processors \
-    -o $file_name".trimmed.fastq" \
-	-p $file_name2".trimmed.fastq" \
+    -o $name".trimmed.fastq" \
+	-p $name2".trimmed.fastq" \
 	-m 25 \
-	$file_name".h1.bc.h2.fastq.gz" \
-	$file_name2".h1.bc.h2.fastq.gz" \
+	$name".h1.bc.h2.fastq.gz" \
+	$name2".h1.bc.h2.fastq.gz" \
 	-e 0.2  >> $path/trimming.log
 
 # Remove
 if $remove
 then
-    rm $file_name".h1.bc.h2.fastq.gz"
-    rm $file_name2".h1.bc.h2.fastq.gz"
+    rm $name".h1.bc.h2.fastq.gz"
+    rm $name2".h1.bc.h2.fastq.gz"
 fi
 
 # Compress/remove
-pigz $file_name".trimmed.fastq"
-pigz $file_name2".trimmed.fastq"
+pigz $name".trimmed.fastq"
+pigz $name2".trimmed.fastq"
 
 if $mailing
     then
