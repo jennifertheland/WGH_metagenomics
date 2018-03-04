@@ -104,15 +104,16 @@ path=$ARG3
 file=$ARG1
 name_ext=$(basename "$file")
 echo $name_ext
-name="${name_ext%.*}"
-echo $name
+name_x="${name_ext%.*}"
+name="${name_x%.*}"
 file_name="$path/${name_ext%.*}"
 echo $file_name
 
 # File two prep
 file2=$ARG2
 name_ext2=$(basename "$file2")
-name2="${name_ext2%.*}"
+name2_x="${name_ext2%.*}"
+name2="${name2_x%.*}"
 file_name2="$path/${name_ext2%.*}"
 
 # Mailing
