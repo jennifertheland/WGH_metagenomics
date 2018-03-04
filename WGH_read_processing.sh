@@ -107,6 +107,7 @@ echo $name_ext
 name="${name_ext%.*}"
 echo $name
 file_name="$path/${name_ext%.*}"
+echo $file_name
 
 # File two prep
 file2=$ARG2
