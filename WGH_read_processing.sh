@@ -140,7 +140,7 @@ pigz $file_name".h1.fastq"
 pigz $file_name2".h1.fastq"
 
 # Get DBS using UMI-Tools -> _BDHVBDVHBDVHBDVH in header.
-umi_tools extract --stdin=$ARG1".h1.fastq" \
+umi_tools extract --stdin=$file_name".h1.fastq" \
     --stdout=$file_name".h1.bc.fastq" \
     --bc-pattern=NNNNNNNNNNNNNNNNNNNN --bc-pattern2= \
     --read2-in=$ARG2 \
