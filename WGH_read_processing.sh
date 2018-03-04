@@ -106,6 +106,7 @@ name_ext=$(basename "$file")
 echo $name_ext
 name_x="${name_ext%.*}"
 name="${name_x%.*}"
+echo $name
 file_name="$path/${name_ext%.*}"
 echo $file_name
 
