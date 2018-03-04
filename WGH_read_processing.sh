@@ -103,7 +103,9 @@ path=$ARG3
 # File one prep
 file=$ARG1
 name_ext=$(basename "$file")
+echo $name_ext
 name="${name_ext%.*}"
+echo $name
 file_name="$path/${name_ext%.*}"
 
 # File two prep
@@ -124,90 +126,90 @@ printf '\n#1 START PROCESSING \n'
 # Start of script
 #
 #
-mkdir -p $path
-
-# Trim away E handle on R1 5'. Also removes reads shorter than 85 bp.
-cutadapt -g ^CAGTTGATCATCAGCAGGTAATCTGG \
-    -j $processors \
-    -o $name".h1.fastq" \
-    -p $name2".h1.fastq" \
-    $ARG1 \
-    $ARG2 \
-    --discard-untrimmed -e 0.2 -m 65 > $path/trimming.txt # Tosses reads shorter than len(e+bc+handle+TES)
-
-printf '#2 TRIMMED E \n'
-pigz $name".h1.fastq"
-pigz $name2".h1.fastq"
-
-# Get DBS using UMI-Tools -> _BDHVBDVHBDVHBDVH in header.
-umi_tools extract --stdin=$name".h1.fastq" \
-    --stdout=$name".h1.bc.fastq" \
-    --bc-pattern=NNNNNNNNNNNNNNNNNNNN --bc-pattern2= \
-    --read2-in=$name2".h1.fastq" \
-    --read2-out=$name2".h1.bc.fastq" \
-    -L $name".h1.bc.txt"
-
-# Remove
-if $remove
-then
-    rm $name".h1.fastq.gz"
-    rm $name2".h1.fastq.gz"
-fi
-
-# Compress
-pigz $name".h1.bc.fastq"
-pigz $name2".h1.bc.fastq"
-printf '#2 GOT DBS USING UMI-TOOLs \n'
-
-#Cut TES from 5' of R1. TES=AGATGTGTATAAGAGACAG. Discard untrimmed.
-cutadapt -g AGATGTGTATAAGAGACAG -o $name".h1.bc.h2.fastq" \
-    -j $processors \
-    -p $name2".h1.bc.h2.fastq" \
-    $name".h1.bc.fastq.gz" \
-    $name2".h1.bc.fastq.gz" \
-    --discard-untrimmed -e 0.2  >> $path/trimming.txt
-
-# Remove
-if $remove
-then
-    rm $name".h1.bc.fastq.gz"
-    rm $name2".h1.bc.fastq.gz"
-fi
-
-# Compress
-pigz $name".h1.bc.h2.fastq"
-pigz $name2".h1.bc.h2.fastq"
-printf '#3 TRIMMED TES1 \n'
-
-#Cut TES' from 3' for R1 and R2. TES'=CTGTCTCTTATACACATCT
-cutadapt -a CTGTCTCTTATACACATCT -A CTGTCTCTTATACACATCT \
-    -j $processors \
-    -o $name".trimmed.fastq" \
-	-p $name2".trimmed.fastq" \
-	-m 25 \
-	$name".h1.bc.h2.fastq.gz" \
-	$name2".h1.bc.h2.fastq.gz" \
-	-e 0.2  >> $path/trimming.log
-
-# Remove
-if $remove
-then
-    rm $name".h1.bc.h2.fastq.gz"
-    rm $name2".h1.bc.h2.fastq.gz"
-fi
-
-# Compress/remove
-pigz $name".trimmed.fastq"
-pigz $name2".trimmed.fastq"
-
-if $mailing
-    then
-    echo 'Trimming finished '$(date) | mail -s $path $email
-fi
-
-# Ugly solution to calculate % construOK
-var1=$( cat $path/trimming.txt | grep 'Read 1 with adapter' | cut -d '(' -f 2 | cut -d '%' -f 1 | tr '\n' ' ' | cut -d ' ' -f 1 )
-var2=$( cat $path/trimming.txt | grep 'Read 1 with adapter' | cut -d '(' -f 2 | cut -d '%' -f 1 | tr '\n' ' ' | cut -d ' ' -f 2 )
-
-printf 'RUN COMPLETE\n'
-awk '{print "\nIntact reads: "$1*$2*0.0001" %\n"}' <<< "$var1 $var2"
+#mkdir -p $path
+#
+## Trim away E handle on R1 5'. Also removes reads shorter than 85 bp.
+#cutadapt -g ^CAGTTGATCATCAGCAGGTAATCTGG \
+#    -j $processors \
+#    -o $name".h1.fastq" \
+#    -p $name2".h1.fastq" \
+#    $ARG1 \
+#    $ARG2 \
+#    --discard-untrimmed -e 0.2 -m 65 > $path/trimming.txt # Tosses reads shorter than len(e+bc+handle+TES)
+#
+#printf '#2 TRIMMED E \n'
+#pigz $name".h1.fastq"
+#pigz $name2".h1.fastq"
+#
+## Get DBS using UMI-Tools -> _BDHVBDVHBDVHBDVH in header.
+#umi_tools extract --stdin=$name".h1.fastq" \
+#    --stdout=$name".h1.bc.fastq" \
+#    --bc-pattern=NNNNNNNNNNNNNNNNNNNN --bc-pattern2= \
+#    --read2-in=$name2".h1.fastq" \
+#    --read2-out=$name2".h1.bc.fastq" \
+#    -L $name".h1.bc.txt"
+#
+## Remove
+#if $remove
+#then
+#    rm $name".h1.fastq.gz"
+#    rm $name2".h1.fastq.gz"
+#fi
+#
+## Compress
+#pigz $name".h1.bc.fastq"
+#pigz $name2".h1.bc.fastq"
+#printf '#2 GOT DBS USING UMI-TOOLs \n'
+#
+##Cut TES from 5' of R1. TES=AGATGTGTATAAGAGACAG. Discard untrimmed.
+#cutadapt -g AGATGTGTATAAGAGACAG -o $name".h1.bc.h2.fastq" \
+#    -j $processors \
+#    -p $name2".h1.bc.h2.fastq" \
+#    $name".h1.bc.fastq.gz" \
+#    $name2".h1.bc.fastq.gz" \
+#    --discard-untrimmed -e 0.2  >> $path/trimming.txt
+#
+## Remove
+#if $remove
+#then
+#    rm $name".h1.bc.fastq.gz"
+#    rm $name2".h1.bc.fastq.gz"
+#fi
+#
+## Compress
+#pigz $name".h1.bc.h2.fastq"
+#pigz $name2".h1.bc.h2.fastq"
+#printf '#3 TRIMMED TES1 \n'
+#
+##Cut TES' from 3' for R1 and R2. TES'=CTGTCTCTTATACACATCT
+#cutadapt -a CTGTCTCTTATACACATCT -A CTGTCTCTTATACACATCT \
+#    -j $processors \
+#    -o $name".trimmed.fastq" \
+#	-p $name2".trimmed.fastq" \
+#	-m 25 \
+#	$name".h1.bc.h2.fastq.gz" \
+#	$name2".h1.bc.h2.fastq.gz" \
+#	-e 0.2  >> $path/trimming.log
+#
+## Remove
+#if $remove
+#then
+#    rm $name".h1.bc.h2.fastq.gz"
+#    rm $name2".h1.bc.h2.fastq.gz"
+#fi
+#
+## Compress/remove
+#pigz $name".trimmed.fastq"
+#pigz $name2".trimmed.fastq"
+#
+#if $mailing
+#    then
+#    echo 'Trimming finished '$(date) | mail -s $path $email
+#fi
+#
+## Ugly solution to calculate % construOK
+#var1=$( cat $path/trimming.txt | grep 'Read 1 with adapter' | cut -d '(' -f 2 | cut -d '%' -f 1 | tr '\n' ' ' | cut -d ' ' -f 1 )
+#var2=$( cat $path/trimming.txt | grep 'Read 1 with adapter' | cut -d '(' -f 2 | cut -d '%' -f 1 | tr '\n' ' ' | cut -d ' ' -f 2 )
+#
+#printf 'RUN COMPLETE\n'
+#awk '{print "\nIntact reads: "$1*$2*0.0001" %\n"}' <<< "$var1 $var2"
