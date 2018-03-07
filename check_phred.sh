@@ -45,6 +45,7 @@ ARG2=${@:$OPTIND+1:1} # r2 file
 
 file1=$ARG1
 name_ext1=$(basename "$file1")
+echo $name_ext1
 name1="${name_ext1%.*}"
 #file_name1="$path/${name_ext1%.*}"
 
@@ -72,4 +73,4 @@ dir_of_files=$PWD
 # head -n 40 in.fastq | awk '{if(NR%4==0) printf("%s",$0);}' | od -A n -t u1 | awk 'BEGIN{min=100;max=0;}{for(i=1;i<=NF;i++) {if($i>max) max=$i; if($i<min) min=$i;}}END{if(max<=74 && min<59) print "Phred+33"; else if(max>73 && min>=64) print "Phred+64"; else if(min>=59 && min<64 && max>73) print "Solexa+64"; else print "Unknown score encoding\!";}'
 
 
-for k in seq 20 8 124; do mkdir k$k abyss-pe -C $dir_of_files/k$k name=seed_opt k=$k in=$ARG1 $ARG2 done
+#for k in seq 20 8 124; do mkdir k$k abyss-pe -C $dir_of_files/k$k name=seed_opt k=$k in=$ARG1 $ARG2 done
