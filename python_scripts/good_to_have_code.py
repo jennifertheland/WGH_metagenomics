@@ -21,11 +21,10 @@ def main():
 
             if line.startswith('>'):
                 temp = line.split('/')[0]
-                try:
-                    print(bc_dict[temp])
-                    new_name = bc_dict[temp]
-                    out.write(new_name)
-                    ecoli = 1
+                try: print(bc_dict[temp])
+                    # new_name = bc_dict[temp]
+                    # out.write(new_name)
+                    # ecoli = 1
                 except KeyError:
                     ecoli = 0
                     continue
