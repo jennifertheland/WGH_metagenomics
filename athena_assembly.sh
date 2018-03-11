@@ -75,7 +75,7 @@ dir_of_files=$PWD
 
 # TAG THE .FASTQ FILES WITH "BC:Z:BC_SEQ" USING tag_fastq.py
 
-printf "### STEP 1 - Tagging initialized \n"
+printf "### STEP 1 - Tagging initiated \n"
 
 for file in $ARG1 $ARG2;
     do
@@ -91,7 +91,7 @@ printf '### STEP 1 complete. Read files tagged with BC:Z:BC_SEQ \n'
 
 # SORT THE FILE ACCORDING TO BC_SEQ
 
-printf "### STEP2 - Sorting initialized \n"
+printf "### STEP2 - Sorting initiated \n"
 
 for file in $dir_of_files/*.tagged.fastq
     do
@@ -110,12 +110,14 @@ printf '### STEP 2 complete. Tagged read files sorted according to barcode seque
 reformat.sh in1=$dir_of_files/$name1.tagged.sorted.fastq in2=$dir_of_files/$name2.tagged.sorted.fastq out=$dir_of_files/interleaved_R1_R2.fastq
 reformat.sh in=$dir_of_files/interleaved_R1_R2.fastq out=$dir_of_files/interleaved_R1_R2.fasta
 
-printf '### STEP 3 complete. read1.fastq and read2.fastq merged to interleaved file and converted to .fasta format. n'
+printf '### STEP 3 complete. read1.fastq and read2.fastq merged to interleaved file and converted to .fasta format. \n'
+
+# extension of reads using tadpole.sh (from bbmap)
 
 #### STEP 4 ####
 
 # RUN IDBA TO ASSEMBLE SEED CONTIGS
-printf "### STEP 4 - Initializing assembly of seed contigs"
+printf "### STEP 4 - Initiating assembly of seed contigs \n"
 
 mkdir idba_seed_contigs
 
@@ -125,33 +127,33 @@ idba_ud -r $dir_of_files/interleaved_R1_R2.fasta -o idba_seed_contigs
 
 cp $dir_of_files/idba_seed_contigs/contig.fa $dir_of_files
 
-printf '### STEP 4 complete. Seed contigs generated.'
+printf '### STEP 4 complete. Seed contigs generated.\n'
 
 #### STEP 5 ####
 
 # RUN BWA MEM TO MAP THE READ CLOUDS TO THE ASSEMBLED CONTIGS
-printf "### STEP 5 - Initializing BWA alignment"
+printf "### STEP 5 - Initiating BWA alignment\n"
 bwa index $dir_of_files/contig.fa
 samtools faidx $dir_of_files/contig.fa
 
-printf 'STEP 5.1 complete. BWA indexes generated.'
+printf 'STEP 5.1 complete. BWA indexes generated.\n'
 
 bwa mem -C -p $dir_of_files/contig.fa $dir_of_files/interleaved_R1_R2.fastq | \
     samtools sort -o mapped_reads.idba_contigs.bam -
 
-printf 'STEP 5.2 complete. Reads mapped to seed contigs.'
-printf '### STEP 5 complete.'
+printf 'STEP 5.2 complete. Reads mapped to seed contigs.\n'
+printf '### STEP 5 complete.\n'
 
 #### STEP 6 ####
 
 # must make index of the .bam file in order for it to work.
-printf "STEP 6 - Generating .bai file"
- samtools index mapped_reads.idba_contigs.bam mapped_reads.idba_contigs.bam.bai
-printf "STEP 6 complete. .bai file generated"
+printf "STEP 6 - Generating .bai file \n"
+samtools index mapped_reads.idba_contigs.bam mapped_reads.idba_contigs.bam.bai
+printf "STEP 6 complete. .bai file generated \n"
 #### STEP 7 ####
 # GENERATE CONFIG.JSON FILE
 
-printf "STEP 7 - Generating config.json file"
+printf "STEP 7 - Generating config.json file \n"
 
 echo -e "{" >> config.json
 echo -e	"\t ctgfasta_path : \t" $dir_of_files/contig.fa"," >> config.json
@@ -163,7 +165,7 @@ echo -e	"\t\t processes:" 4 >> config.json
 echo -e	"\t}" >> config.json
 echo -e  "}" >> config.json
 
-printf "STEP 7 complete. "
+printf "STEP 7 complete. \n"
 
 #### STEP 8 ####
 # RUN ATHENA
