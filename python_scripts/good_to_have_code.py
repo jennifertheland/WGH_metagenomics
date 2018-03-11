@@ -15,7 +15,7 @@ def main():
                 out.write(new_line)
 
             else:
-                out.write(new_line)
+                out.write(line)
 
 
 def lineCounter(infile):
