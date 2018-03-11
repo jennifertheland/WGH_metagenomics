@@ -31,7 +31,7 @@ def main():
 
                 try:
                     new_name = bc_dict[temp]
-                    print(new_name)
+                    out.write(new_name)
                     ecoli = 1
                 except KeyError:
 
