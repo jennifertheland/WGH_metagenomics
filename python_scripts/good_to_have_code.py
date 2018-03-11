@@ -9,43 +9,20 @@ def main():
     ArgumentParser()
     configureLogging('info')
 
-    with open(args.name_1,'r') as inf, open(args.name_2,'w') as out:
-        prev_seq = ''
-        read_count = 0
-        same_bc = False
+    with open(args.name_1, 'r') as whole, open(args.name_2) as Bl21, open(args.name_3,'w') as out:
 
-        for line in inf:
+        bc_dict = dict()
 
-            line_list = line.split()
+        for line in whole:
 
+            if line.startswith('>'):
 
-            if line.startswith("Cluster"):
-
-
-                out.write('Barcode seq: ' + prev_seq + '\t # reads: ' + str(read_count * 2) + '\n')
-
-                out.write(line)
-
-
-            elif prev_seq != line_list[2] and prev_seq != '':
-
-                if prev_seq != 'sequence:':
-
-                    out.write('Barcode seq: ' + prev_seq + '\t # reads: ' + str(read_count * 2) + '\n')
-
-                read_count = int(line_list[-1])
-
-
-            else:
-                same_bc = True
-                read_count += int(line_list[-1])
-
-            prev_seq = line_list[2]
+                name_of_read, barcode = line.split()
+                print(name_of_read barcode)
 
 
 
 
-        out.write('Barcode seq: ' + prev_seq + '\t # reads: ' + str(read_count*2) + '\n')
 
 def lineCounter(infile):
 
@@ -145,6 +122,8 @@ class ArgumentParser():
         parser.add_argument('name_1',help='This is an explaination of the argument.')
 
         parser.add_argument('name_2',help='This is an explaination of the argument.')
+
+        parser.add_argument('name_3',help='This is an explaination of the argument.')
 
         args = parser.parse_args()
 
