@@ -21,6 +21,8 @@ def main():
 
                 bc_dict[name_of_read] = line
 
+        print(bc_dict)
+
         for line in Bl21:
 
             if line.startswith('>'):
