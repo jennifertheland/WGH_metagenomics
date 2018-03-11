@@ -23,9 +23,9 @@ def main():
             if line.startswith('>'):
                 temp = line.split('/')[0]
                 try:
-                    # new_name = bc_dict[temp]
-                    # out.write(new_name)
-                    # ecoli = 1
+                    new_name = bc_dict[temp]
+                    out.write(new_name)
+                    ecoli = 1
                 except KeyError:
                     ecoli = 0
                     continue
