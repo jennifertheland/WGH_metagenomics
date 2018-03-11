@@ -6,7 +6,7 @@ def main():
     ArgumentParser()
     configureLogging('info')
 
-    with open(args.name_1, 'r') as inf, open(args.name_2) as out:
+    with open(args.name_1, 'r') as inf, open(args.name_2,'w') as out:
 
         for line in inf:
 
