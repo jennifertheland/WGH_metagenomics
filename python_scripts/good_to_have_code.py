@@ -15,7 +15,7 @@ def main():
             if line.startswith('>'):
 
                 name_of_read, barcode = line.split()
-                print(name_of_read barcode)
+                print(name_of_read + barcode)
 
 
 
