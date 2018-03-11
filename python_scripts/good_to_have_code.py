@@ -15,22 +15,29 @@ def main():
             if line.startswith('>'):
 
                 name_of_read_temp = line.split()[0]
+
                 name_of_read = name_of_read_temp.split('_')[0]
+
                 bc_dict[name_of_read] = line
 
         for line in Bl21:
 
             if line.startswith('>'):
+
                 temp = line.split('/')[0]
+
                 try:
                     new_name = bc_dict[temp]
-                    out.write(new_name)
+                    print(new_name)
                     ecoli = 1
                 except KeyError:
+
                     ecoli = 0
+
                     continue
 
             elif ecoli == 1:
+
                 out.write(line)
 
 def lineCounter(infile):
