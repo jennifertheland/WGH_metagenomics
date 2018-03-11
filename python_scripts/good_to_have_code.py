@@ -3,9 +3,6 @@
 
 def main():
 
-    import sys, time, pysam
-    global sys, time
-
     ArgumentParser()
     configureLogging('info')
 
