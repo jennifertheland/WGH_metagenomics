@@ -26,7 +26,6 @@ def main():
             if line.startswith('>'):
 
                 temp = line.split('/')[0]
-                print(temp)
 
                 try:
                     new_name = bc_dict[temp]
