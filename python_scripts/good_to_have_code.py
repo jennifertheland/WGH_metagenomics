@@ -21,8 +21,8 @@ def main():
 
             if line.startswith('>'):
                 temp = line.split('/')[0]
-                print(bc_dict[temp])
                 try:
+                    print(bc_dict[temp])
                     new_name = bc_dict[temp]
                     out.write(new_name)
                     ecoli = 1
