@@ -6,42 +6,17 @@ def main():
     ArgumentParser()
     configureLogging('info')
 
-    with open(args.name_1, 'r') as whole, open(args.name_2) as Bl21, open(args.name_3,'w') as out:
-        ecoli = 0
-        bc_dict = dict()
+    with open(args.name_1, 'r') as inf, open(args.name_2) as out:
 
-        for line in whole:
+        for line in inf:
 
             if line.startswith('>'):
+                new_line = line + '-1'
+                out.write(new_line)
 
-                name_of_read_temp = line.split()[0]
+            else:
+                out.write(new_line)
 
-                name_of_read = name_of_read_temp.split('_')[0]
-
-
-                bc_dict[name_of_read] = line
-
-        print(bc_dict)
-
-        for line in Bl21:
-
-            if line.startswith('>'):
-
-                temp = line.split('/')[0]
-
-                try:
-                    new_name = bc_dict[temp]
-                    out.write(new_name)
-                    ecoli = 1
-                except KeyError:
-
-                    ecoli = 0
-
-                    continue
-
-            elif ecoli == 1:
-
-                out.write(line)
 
 def lineCounter(infile):
 
