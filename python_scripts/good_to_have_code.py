@@ -20,8 +20,8 @@ def main():
         for line in Bl21:
 
             if line.startswith('>'):
-
-                new_name = bc_dict[line]
+                temp = line.strip('\n')
+                new_name = bc_dict[temp]
                 out.write(new_name)
 
             else:
