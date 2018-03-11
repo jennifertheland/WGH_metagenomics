@@ -21,8 +21,12 @@ def main():
 
             if line.startswith('>'):
                 temp = line.split('/')[0]
-                new_name = bc_dict[temp]
-                out.write(new_name)
+
+                try:
+                    new_name = bc_dict[temp]
+                    out.write(new_name)
+                except KeyError:
+                    continue
 
             else:
                 out.write(line)
