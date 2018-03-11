@@ -20,7 +20,7 @@ def main():
         for line in Bl21:
 
             if line.startswith('>'):
-                temp = line.strip('\n')
+                temp = line.split('/')[0]
                 new_name = bc_dict[temp]
                 out.write(new_name)
 
