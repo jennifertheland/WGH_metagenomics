@@ -17,6 +17,7 @@ def main():
                 name_of_read_temp = line.split()[0]
 
                 name_of_read = name_of_read_temp.split('_')[0]
+                print (name_of_read)
 
                 bc_dict[name_of_read] = line
 
@@ -25,6 +26,7 @@ def main():
             if line.startswith('>'):
 
                 temp = line.split('/')[0]
+                print(temp)
 
                 try:
                     new_name = bc_dict[temp]
