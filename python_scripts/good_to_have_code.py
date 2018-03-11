@@ -7,7 +7,7 @@ def main():
     configureLogging('info')
 
     with open(args.name_1, 'r') as whole, open(args.name_2) as Bl21, open(args.name_3,'w') as out:
-
+        ecoli = 0
         bc_dict = dict()
 
         for line in whole:
@@ -25,12 +25,12 @@ def main():
                 try:
                     new_name = bc_dict[temp]
                     out.write(new_name)
-                    is_BL21 = True
+                    ecoli = 1
                 except KeyError:
-                    is_BL21 = False
+                    ecoli = 0
                     continue
 
-            elif is_Bl21:
+            elif ecoli == 1:
                 out.write(line)
 
 def lineCounter(infile):
