@@ -25,10 +25,12 @@ def main():
                 try:
                     new_name = bc_dict[temp]
                     out.write(new_name)
+                    is_BL21 = True
                 except KeyError:
+                    is_BL21 = False
                     continue
 
-            else:
+            elif is_Bl21:
                 out.write(line)
 
 def lineCounter(infile):
