@@ -14,12 +14,18 @@ def main():
 
             if line.startswith('>'):
 
-                name_of_read, barcode = line.split()
-                print(name_of_read + barcode)
+                name_of_read = line.split()[0]
+                bc_dict[name_of_read] = line
 
+        for line in Bl21:
 
+            if line.startswith('>'):
 
+                new_name = bc_dict[line]
+                out.write(new_name)
 
+            else:
+                out.write(line)
 
 def lineCounter(infile):
 
