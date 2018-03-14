@@ -25,7 +25,7 @@ def main():
 
         for line in inf:
 
-            if line.startswith('@M01'):
+            if line.startswith('>M01'):
 
                 new_line = accession_for_all + line[27:]
 
