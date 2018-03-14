@@ -21,6 +21,8 @@ def main():
 
         first_line = inf.readline()
 
+        out.write(first_line)
+
         accession_for_all = first_line[0:27]
 
         for line in inf:
