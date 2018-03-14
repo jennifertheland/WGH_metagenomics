@@ -8,32 +8,32 @@ def main():
 
     with open(args.name_1,'r') as inf, open(args.name_2,'w') as out:
 
+        # for line in inf:
+        #
+        #     if line.startswith('@M'):
+        #
+        #         id, barcode, junk = line.split()
+        #         out.write(id + ' ' + barcode + '\n')
+        #     else:
+        #         out.write(line)
+
+    with open(args.name_1, 'r') as inf, open(args.name_2,'w') as out:
+
+        first_line = inf.readline()
+
+        accession_for_all = first_line[0:27]
+
         for line in inf:
 
-            if line.startswith('@M'):
+            if line.startswith('@M01'):
 
-                id, barcode, junk = line.split()
-                out.write(id + ' ' + barcode + '\n')
+                new_line = accession_for_all + line[27:]
+
+                out.write(new_line)
+
             else:
-                out.write(line)
 
-    # with open(args.name_1, 'r') as inf, open(args.name_2,'w') as out:
-    #
-    #     first_line = inf.readline()
-    #
-    #     accession_for_all = first_line[0:27]
-    #
-    #     for line in inf:
-    #
-    #         if line.startswith('@M01'):
-    #
-    #             new_line = accession_for_all + line[27:]
-    #
-    #             out.write(new_line)
-    #
-    #         else:
-    #
-    #             out.write(new_line)
+                out.write(new_line)
 
 
 
