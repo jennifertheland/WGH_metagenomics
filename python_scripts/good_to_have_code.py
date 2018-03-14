@@ -33,7 +33,7 @@ def main():
 
             else:
 
-                out.write(new_line)
+                out.write(line)
 
 
 
