@@ -103,6 +103,8 @@ for file in $dir_of_files/*.tagged.fastq
 
 printf '### STEP 2 complete. Tagged read files sorted according to barcode sequence \n'
 
+##### Separate the reads according to species???
+
 #### STEP 3 ####
 
 # MERGE THE TAGGED AND SORTED .FASTQ FILES (CREATING AN INTERLEAVED FILE) AND CONVERT IT TO .FASTA FORMAT (bbmap reformat)
@@ -173,3 +175,20 @@ printf "STEP 7 complete. \n"
 #printf "STEP 8 - Running Athena-meta"
 #athena-meta $dir_of_files/config.json
 #printf "STEP 8 complete. Genome assembled."
+
+#### STEP 9 ####
+
+
+#bwa index $dir_of_files/results/olc/athena.asm.fa
+#bwa mem -C -p $dir_of_files/results/olc/athena.asm.fa $dir_of_files/interleaved_R1_R2.fastq | \
+#    samtools sort -n into_arcs.bam -
+
+# echo "into_arcs.bam" >> bamfiles.txt
+
+# arcs -f $dir_of_files/results/olc/athena.asm.fa -a bamfiles.txt -s 98 -c 5 -l 0 -z 500 -m 50-1000 -d 0 -e 1000 -r 0.05
+
+
+graph=athena.asm.fa.scaff_s98_c5_l0_d0_e1000_r0.05_original.gv
+
+# python $dir_of_scripts/python_scripts/makeTSVfile.py $graph athena.asm.fa.c5_e1000_r0.05.tigpair_checkpoint.tsv $dir_of_files/results/olc/athena.asm.fa
+

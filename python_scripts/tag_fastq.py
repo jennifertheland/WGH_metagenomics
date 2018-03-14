@@ -22,13 +22,14 @@ def main():
 
         for record in SeqIO.parse(openin,'fastq'):
 
-            bc_seq = record.id.split('_')[-1]
+            name,bc_seq = record.id.split('_')
 
             try:
                 consensus_seq = summaryInstance.master_barcode_dict[bc_seq]
             except KeyError:
                 continue
 
+            record.id = name + '_' + consensus_seq
             record.description = record.id + ' BC:Z:' + consensus_seq + '-1'
 
             SeqIO.write(record,openout,'fastq')

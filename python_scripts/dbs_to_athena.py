@@ -3,40 +3,38 @@
 
 def main():
 
+    from Bio import SeqIO
+
     ArgumentParser()
     configureLogging('info')
 
-    with open(args.name_1,'r') as inf, open(args.name_2,'w') as out:
+    with open(args.name_1,'r') as inf:
 
-        for line in inf:
+        logging.info('File read.')
 
-            if line.startswith('@M'):
+        id_to_description_dict = dict()
 
-                id, barcode, junk = line.split()
-                out.write(id + ' ' + barcode + '\n')
-            else:
-                out.write(line)
+        for record in SeqIO.parse(inf, 'fastq'):
 
-    # with open(args.name_1, 'r') as inf, open(args.name_2,'w') as out:
-    #
-    #     first_line = inf.readline()
-    #
-    #     accession_for_all = first_line[0:27]
-    #
-    #     for line in inf:
-    #
-    #         if line.startswith('@M01'):
-    #
-    #             new_line = accession_for_all + line[27:]
-    #
-    #             out.write(new_line)
-    #
-    #         else:
-    #
-    #             out.write(new_line)
+            id_only = record.id.split('_')[0]
 
+            id_to_description_dict[id_only] = record.description
 
+        logging.info('Dictionary created.')
 
+    with open(args.name_2,'r') as inf2, open(args.name_3,'w') as out:
+
+        for record in SeqIO.parse(inf2,'fastq'):
+
+            try:
+                full_id = id_to_description_dict[record.id]
+
+                record.id = full_id
+
+                SeqIO.write(record,out,'fastq')
+
+            except KeyError:
+                continue
 
 def lineCounter(infile):
 
@@ -137,7 +135,7 @@ class ArgumentParser():
 
         parser.add_argument('name_2',help='This is an explaination of the argument.')
 
-#        parser.add_argument('name_3',help='This is an explaination of the argument.')
+        parser.add_argument('name_3', help='This is an explaination of the argument.')
 
         args = parser.parse_args()
 

@@ -3,24 +3,32 @@
 
 def main():
 
-    import sys, time, pysam
-    global sys, time
+    from Bio import SeqIO
 
     ArgumentParser()
     configureLogging('info')
 
-    with open(args.name_1,'r') as inf, open(args.name_2,'w') as out:
+    with open(args.name_1,'r') as inf:
 
-        for line in inf:
+        id_to_description_dict = dict()
 
-            if line.startswith('Cluster'):
-                consensus = line.split()[-1]
-                if consensus.startswith('A'):
-                    out.write('Barcode clusters to be merged: \n')
-                else:
-                    out.write('Barcode clusters to be merged: \n' + 'Barcode seq: ' + consensus + '\t\n')
-            else:
-                out.write(line)
+        for record in SeqIO.parse(inf, 'fastq'):
+
+            id_only = record.id.split('_')[0]
+
+            id_to_description_dict[id_only] = record.description
+
+        logging.info('Dictionary created.')
+
+    with open(args.name_2,'r') as inf2, open(args.name_3,'w') as out:
+
+        for record in SeqIO.parse(inf2,'fastq'):
+
+            full_id = id_to_description_dict[record.id]
+
+            record.description = full_id
+
+            SeqIO.write(record,out,'fastq')
 
 def lineCounter(infile):
 
@@ -120,6 +128,8 @@ class ArgumentParser():
         parser.add_argument('name_1',help='This is an explaination of the argument.')
 
         parser.add_argument('name_2',help='This is an explaination of the argument.')
+
+        parser.add_argument('name_3', help='This is an explaination of the argument.')
 
         args = parser.parse_args()
 
