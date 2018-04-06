@@ -131,11 +131,11 @@ class ArgumentParser():
 
         parser = argparse.ArgumentParser(description=__doc__)
 
-        parser.add_argument('name_1',help='This is an explaination of the argument.')
+        parser.add_argument('name_1',help='Barcode tagged interleaved file.')
 
-        parser.add_argument('name_2',help='This is an explaination of the argument.')
+        parser.add_argument('name_2',help='File from DBS pipe.')
 
-        parser.add_argument('name_3', help='This is an explaination of the argument.')
+        parser.add_argument('name_3', help='Outfile.')
 
         args = parser.parse_args()
 

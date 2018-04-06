@@ -5,39 +5,53 @@ def main():
 
     ArgumentParser()
     configureLogging('info')
-    #
-    # with open(args.name_1,'r') as inf, open(args.name_2,'w') as out:
 
-        # for line in inf:
-        #
-        #     if line.startswith('@M'):
-        #
-        #         id, barcode, junk = line.split()
-        #         out.write(id + ' ' + barcode + '\n')
-        #     else:
-        #         out.write(line)
 
-    with open(args.name_1, 'r') as inf, open(args.name_2,'w') as out:
-
-        first_line = inf.readline()
-
-        out.write(first_line)
-
-        accession_for_all = first_line[0:27]
+    with open(args.name_1,'r') as inf, open(args.name_2,'w') as out:
 
         for line in inf:
 
-            if line.startswith('>M01'):
+            if line.startswith('@ST'):
 
-                new_line = accession_for_all + line[27:]
+                new_line = line.split('/')[0]
 
-                out.write(new_line)
+                out.write(new_line + '\n')
 
             else:
 
                 out.write(line)
 
 
+
+
+
+
+
+    # with open(args.name_1,'r') as inf, open(args.name_2,'w') as out1, open(args.name_3,'w') as out2:
+    #
+    #     even = True
+    #
+    #     for line in inf:
+    #
+    #         if even == True:
+    #
+    #             temp = line.strip('\n')
+    #
+    #             ref, pos1, pos2, ctg, rand, strand = temp.split()
+    #
+    #             out1.write('chr1' + '\t' + pos1 + '\t' + pos2 + '\t' + str(0) + '\n')
+    #
+    #             even = False
+    #
+    #         else:
+    #
+    #             temp = line.strip('\n')
+    #
+    #             ref, pos1, pos2, ctg, rand, strand = temp.split()
+    #
+    #             out2.write('chr1' + '\t' + pos1 + '\t' + pos2 + '\t' + str(0) + '\n')
+    #
+    #             even = True
 
 
 def lineCounter(infile):
@@ -139,7 +153,7 @@ class ArgumentParser():
 
         parser.add_argument('name_2',help='This is an explaination of the argument.')
 
-#        parser.add_argument('name_3',help='This is an explaination of the argument.')
+        parser.add_argument('name_3',help='This is an explaination of the argument.')
 
         args = parser.parse_args()
 

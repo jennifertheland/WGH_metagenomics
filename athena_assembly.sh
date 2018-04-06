@@ -146,6 +146,8 @@ bwa mem -C -p $dir_of_files/contig.fa $dir_of_files/interleaved_R1_R2.fastq | \
 printf 'STEP 5.2 complete. Reads mapped to seed contigs.\n'
 printf '### STEP 5 complete.\n'
 
+# REMOVE DUPLICATES (rmdup + mkdup + tobbes script)
+
 #### STEP 6 ####
 
 # must make index of the .bam file in order for it to work.
@@ -188,7 +190,7 @@ printf "STEP 7 complete. \n"
 # arcs -f $dir_of_files/results/olc/athena.asm.fa -a bamfiles.txt -s 98 -c 5 -l 0 -z 500 -m 50-1000 -d 0 -e 1000 -r 0.05
 
 
-graph=athena.asm.fa.scaff_s98_c5_l0_d0_e1000_r0.05_original.gv
+# graph=athena.asm.fa.scaff_s98_c5_l0_d0_e1000_r0.05_original.gv
 
 # python $dir_of_scripts/python_scripts/makeTSVfile.py $graph athena.asm.fa.c5_e1000_r0.05.tigpair_checkpoint.tsv $dir_of_files/results/olc/athena.asm.fa
 

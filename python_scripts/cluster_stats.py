@@ -69,7 +69,7 @@ def main():
 
                 # Calculates % read bases of insert, aka (bp_r1 + bp_r2) / (bp_r1 + bp_r2 + bp_btw_rp)
                 percent_coverage = read_pair_coverage(mate_start, mate_stop, read_start, read_stop)
-                barcode_id = read.get_tag('BX')
+                barcode_id = read.get_tag('RX')
 
                 # Intitates phase blocks with name = barcode_ID, if not that phase block exist, then fetches last pos(phase block)
                 try: last_pos_of_phase_block = currentPhaseBlocks.dictionary[barcode_id]['stop']
