@@ -155,12 +155,12 @@ printf "STEP 6 complete. .bai file generated \n"
 printf "STEP 7 - Generating config.json file \n"
 
 echo -e "{" >> config.json
-echo -e	"\t ctgfasta_path : \t" $dir_of_files/contig.fa"," >> config.json
-echo -e	"\t reads_ctg_bam_path: "  $dir_of_files/mapped_reads.idba_contigs.bam,  >> config.json
-echo -e	"\t input_fqs: "           $dir_of_files/interleaved_R1_R2.fastq, >> config.json
-echo -e	"\t cluster_settings:  {" >> config.json
-echo -e "\t\t cluster_type:" "multiprocessing," >> config.json
-echo -e	"\t\t processes:" 4 >> config.json
+echo -e	"\t "ctgfasta_path" : \t "$dir_of_files/contig.fa"," >> config.json
+echo -e	"\t "reads_ctg_bam_path":  "$dir_of_files/mapped_reads.idba_contigs.bam","  >> config.json
+echo -e	"\t "input_fqs":            "$dir_of_files/interleaved_R1_R2.fastq"," >> config.json
+echo -e	"\t "cluster_settings":  {" >> config.json
+echo -e "\t\t "cluster_type": "multiprocessing"," >> config.json
+echo -e	"\t\t "processes":" 4 >> config.json
 echo -e	"\t}" >> config.json
 echo -e  "}" >> config.json
 
