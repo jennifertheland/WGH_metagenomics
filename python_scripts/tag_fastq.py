@@ -3,18 +3,18 @@
 def main():
     """ Takes a .fastq file with trimmed reads and a .fasta file with clustered barcodes. Output is a tagged .fastq file. """
 
-    global args, summaryInstance
+    global args, summaryObject
     from Bio import SeqIO
     import logging
 
     configureLogging('info')
 
-    readArgs() # Argument parsing
+    argParser() # Argument parsing
     logging.info('Arguments read successfully')
 
-    summaryInstance = Summary()
+    summaryObject = Sum()
 
-    readAndProcessClusters(args.input_clstr)
+    readClusters(args.input_clstr)
 
     logging.info('Cluster file processed successfully')
 
@@ -25,7 +25,7 @@ def main():
             name,bc_seq = record.id.split('_')
 
             try:
-                consensus_seq = summaryInstance.master_barcode_dict[bc_seq]
+                consensus_seq = summaryObject.master_barcode_dict[bc_seq]
             except KeyError:
                 continue
 
@@ -36,26 +36,22 @@ def main():
 
     logging.info('Tagging completed')
 
-class readArgs(object):
-    """ Reads arguments and handles basic error handling like python version control etc."""
+class argParser(object):
+    """Reads input arguments"""
 
     def __init__(self):
-        """ Main funcion for overview of what is run. """
 
-        readArgs.parse(self)
+        argParser.parse(self)
 
     def parse(self):
 
-        import argparse, multiprocessing
+        import argparse
         global args
 
         parser = argparse.ArgumentParser(description=__doc__)
-
-        # Arguments
         parser.add_argument("input_trimmed_fastq", help=".fastq file with trimmed reads which is to be tagged with barcode id:s.")
         parser.add_argument("input_clstr", help=".clstr file from cdhit clustering.")
         parser.add_argument("output_tagged_fastq", help=".fastq file tagged with barcode consensus sequence")
-
         args = parser.parse_args()
 
 class configureLogging(object):
@@ -99,14 +95,14 @@ class configureLogging(object):
         logging.basicConfig(level=logging.DEBUG, format=log_format)
 
 
-def readAndProcessClusters(openClstrFile):
-    """ Reads clstr file and builds consensus_bc:bc dict in Summary instance."""
+def readClusters(clstrfile):
+    """ Reads clstr file and builds consensus_bc:bc dict in Sum"""
 
     new_cluster = False
 
-    with open(openClstrFile, 'r') as f:
+    with open(clstrfile, 'r') as f:
 
-        clusterInstance = ClusterObject(clusterId=f.readline())  # set clusterId for the first cluster
+        cluster = ClusterObject(clusterId=f.readline())  # set clusterId for the first cluster
 
         for line in f:
             # Reports cluster to master dict and start new cluster instance
@@ -119,15 +115,15 @@ def readAndProcessClusters(openClstrFile):
 
                 new_cluster = False
 
-                clusterInstance = ClusterObject(clusterId=line)
-                clusterInstance.addBarcodeToDict(line)
-                summaryInstance.updateReadToClusterDict(clusterInstance)
+                cluster = ClusterObject(clusterId=line)
+                cluster.addBarcodeToDict(line)
+                summaryObject.updateDict(cluster)
 
             else:
-                clusterInstance.addBarcodeToDict(line)
+                cluster.addBarcodeToDict(line)
 
         # Add last cluster to master dict
-        summaryInstance.updateReadToClusterDict(clusterInstance)
+        summaryObject.updateDict(cluster)
 
 
 class ClusterObject(object):
@@ -144,18 +140,17 @@ class ClusterObject(object):
         barcode = accession.split(':')[-1]
         self.consensus_to_bc_dict[barcode] = self.consensus
 
-class Summary(object):
+class Sum(object):
 
     def __init__(self):
         self.master_barcode_dict = dict()
 
-    def updateReadToClusterDict(self, input_object):
+    def updateDict(self, input_object):
         """ Merges cluster-specific dictionaries to a master dictionary."""
 
         input_dict = input_object.consensus_to_bc_dict
 
         for barcode in input_dict.keys():
             self.master_barcode_dict[barcode] = input_object.consensus
-
 
 if __name__=="__main__": main()

@@ -7,51 +7,51 @@ def main():
     configureLogging('info')
 
 
-    with open(args.name_1,'r') as inf, open(args.name_2,'w') as out:
-
-        for line in inf:
-
-            if line.startswith('@ST'):
-
-                new_line = line.split('/')[0]
-
-                out.write(new_line + '\n')
-
-            else:
-
-                out.write(line)
-
-
-
-
-
-
-
-    # with open(args.name_1,'r') as inf, open(args.name_2,'w') as out1, open(args.name_3,'w') as out2:
-    #
-    #     even = True
+    # with open(args.name_1,'r') as inf, open(args.name_2,'w') as out:
     #
     #     for line in inf:
     #
-    #         if even == True:
+    #         if line.startswith('@ST'):
     #
-    #             temp = line.strip('\n')
+    #             new_line = line.split('/')[0]
     #
-    #             ref, pos1, pos2, ctg, rand, strand = temp.split()
-    #
-    #             out1.write('chr1' + '\t' + pos1 + '\t' + pos2 + '\t' + str(0) + '\n')
-    #
-    #             even = False
+    #             out.write(new_line + '\n')
     #
     #         else:
     #
-    #             temp = line.strip('\n')
+    #             out.write(line)
     #
-    #             ref, pos1, pos2, ctg, rand, strand = temp.split()
     #
-    #             out2.write('chr1' + '\t' + pos1 + '\t' + pos2 + '\t' + str(0) + '\n')
     #
-    #             even = True
+    #
+    #
+
+
+    with open(args.name_1,'r') as inf, open(args.name_2,'w') as out1, open(args.name_3,'w') as out2:
+
+        even = True
+
+        for line in inf:
+
+            if even == True:
+
+                temp = line.strip('\n')
+
+                ref, pos1, pos2, ctg, rand, strand = temp.split()
+
+                out1.write('chr1' + '\t' + pos1 + '\t' + pos2 + '\t' + str(0) + '\n')
+
+                even = False
+
+            elif even == False:
+
+                temp = line.strip('\n')
+
+                ref, pos1, pos2, ctg, rand, strand = temp.split()
+
+                out2.write('chr1' + '\t' + pos1 + '\t' + pos2 + '\t' + str(0) + '\n')
+
+                even = True
 
 
 def lineCounter(infile):

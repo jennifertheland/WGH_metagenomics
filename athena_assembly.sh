@@ -15,15 +15,11 @@ remove=false
 while getopts "hp:" OPTION
 do
     case ${OPTION} in
-
-        p)
-            processors=${OPTARG}
-            ;;
         h)
             echo ''
-	    echo 'This script performs fastq file processing and assembly of paired read metagenomics data.'
+	    echo 'This script processes paried read metagenomics data and performs de novo whole genome assembly..'
 	    echo ""
-	    echo 'Useage: bash athena_assembly.sh <r1_trimmed.fq> <r2_trimmed.fq> <NNN.clstr> <output_dir>'
+	    echo 'Usage: bash athena_assembly.sh <r1_trimmed.fq> <r2_trimmed.fq> <NNN.clstr> <output_dir>'
 	    echo ''
 	    echo "Positional arguments (required)"
 	    echo "  <r1_trimmed.fq>         Read one in .fastq format. The reads shold be trimmed with the barcode in the header. "
@@ -33,7 +29,6 @@ do
 	    echo ""
 	    echo "Optional arguments"
 	    echo "  -h  help (this output)"
-	    echo "  -p  processors for threading, not implemented yet"
 	    echo ''
 	    exit 0
 	    ;;

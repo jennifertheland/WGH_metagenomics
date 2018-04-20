@@ -8,36 +8,79 @@ def main():
 
     with open(args.name_1,'r') as inf, open(args.name_2,'w') as out:
 
-        counter = 0
-        total_coverage = 0
+        #step_size = 5000
+
+        number_of_bins = 1
 
         for line in inf:
 
-            if counter == 0:
+            if number_of_bins == 1:
 
-                first_position = line.split()[1]
+                name_chr1, start_pos1, stop_pos1, coverage1 = line.split()
 
-            counter += 1
+                number_of_bins += 1
 
-            pos_coverage = line.split()[-1]
+            #if int(phase_block_length) < step_size * number_of_bins and int(phase_block_length) > step_size * number_of_bins - 5000:
 
-            total_coverage += int(pos_coverage)
+            #   total_occurances += int(occurance)
 
-            if counter == 50:
+            elif number_of_bins == 2:
 
-                col_1,col_2,col_3,col_4 = line.split()
+                name_chr2, start2_pos, stop_pos2, coverage2 = line.split()
 
-                number_of_bases = int(col_3) - int(first_position)
+                total_cov = (float(coverage1) + float(coverage2))/2
 
-                coverage = total_coverage / number_of_bases
+                out.write(name_chr1 + '\t' + start_pos1 + '\t' + stop_pos2 + '\t' + str(total_cov) + '\n')
 
-                out.write('chr1' + '\t' + first_position + '\t' + col_2 + '\t' + str(coverage) + '\n')
+                number_of_bins = 1
 
-                counter = 0
+            #    out.write(str(step_size * number_of_bins - 5000) + '\t' + str(step_size*number_of_bins) + '\t' + str(total_occurances) + '\n')
 
-                total_coverage = 0
+            #   if int(phase_block_length) > step_size * number_of_bins:
 
-                coverage = 0
+            #        while int(phase_block_length) > step_size * number_of_bins:
+
+
+             #           number_of_bins += 1
+
+              #      total_occurances = int(occurance)
+
+             #   else:
+              #      number_of_bins += 1
+
+        #out.write(str(step_size * number_of_bins - 5000) + '\t' + str(step_size*number_of_bins) + '\t' + str(total_occurances) + '\n')
+
+
+        # counter = 0
+        # total_coverage = 0
+        #
+        # for line in inf:
+        #
+        #     if counter == 0:
+        #
+        #         first_position = line.split()[1]
+        #
+        #     counter += 1
+        #
+        #     pos_coverage = line.split()[-1]
+        #
+        #     total_coverage += int(pos_coverage)
+        #
+        #     if counter == 50:,
+        #
+        #         col_1,col_2,col_3,col_4 = line.split()
+        #
+        #         number_of_bases = int(col_3) - int(first_position)
+        #
+        #         coverage = total_coverage / number_of_bases
+        #
+        #         out.write('chr1' + '\t' + first_position + '\t' + col_2 + '\t' + str(coverage) + '\n')
+        #
+        #         counter = 0
+        #
+        #         total_coverage = 0
+        #
+        #         coverage = 0
 
 def lineCounter(infile):
 
