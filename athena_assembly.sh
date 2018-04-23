@@ -1,17 +1,5 @@
 #!/usr/bin/env bash
 
-#
-# Initials
-#
-
-processors=1
-mailing=false
-remove=false
-
-#
-# Argument parsing
-#
-
 while getopts "hp:" OPTION
 do
     case ${OPTION} in
@@ -40,19 +28,13 @@ ARG2=${@:$OPTIND+1:1} # r2 file
 ARG3=${@:$OPTIND+2:1} # .clstr file
 ARG4=${@:$OPTIND+3:1} # output dir
 
-
 file1=$ARG1
 name_ext1=$(basename "$file1")
 name1="${name_ext1%.*}"
-#file_name1="$path/${name_ext1%.*}"
 
 file2=$ARG2
 name_ext2=$(basename "$file2")
 name2="${name_ext2%.*}" # name without extension
-
-#
-# Error handling
-#
 
 if [ -z "$ARG1" ] || [ -z "$ARG2" ] || [ -z "$ARG3" ] || [ -z "$ARG4" ]
 then
@@ -169,12 +151,13 @@ printf "STEP 7 complete. \n"
 #### STEP 8 ####
 # RUN ATHENA
 
-#printf "STEP 8 - Running Athena-meta"
-#athena-meta $dir_of_files/config.json
-#printf "STEP 8 complete. Genome assembled."
+printf "STEP 8 - Running Athena-meta"
+
+athena-meta $dir_of_files/config.json
+
+printf "STEP 8 complete. Genome assembled."
 
 #### STEP 9 ####
-
 
 #bwa index $dir_of_files/results/olc/athena.asm.fa
 #bwa mem -C -p $dir_of_files/results/olc/athena.asm.fa $dir_of_files/interleaved_R1_R2.fastq | \
