@@ -89,6 +89,8 @@ printf '### STEP 2 complete. Tagged read files sorted according to barcode seque
 reformat.sh in1=$dir_of_files/$name1.tagged.sorted.fastq in2=$dir_of_files/$name2.tagged.sorted.fastq out=$dir_of_files/interleaved_R1_R2.fastq
 reformat.sh in=$dir_of_files/interleaved_R1_R2.fastq out=$dir_of_files/interleaved_R1_R2.fasta
 
+rm $dir_of_files/*tagged*
+
 printf '### STEP 3 complete. read1.fastq and read2.fastq merged to interleaved file and converted to .fasta format. \n'
 
 # extension of reads using tadpole.sh (from bbmap)
@@ -105,7 +107,7 @@ mkdir idba_seed_contigs
 idba_ud -r $dir_of_files/interleaved_R1_R2.fasta -o idba_seed_contigs
 
 cp $dir_of_files/idba_seed_contigs/contig.fa $dir_of_files
-
+rm -rf $dir_of_files/idba_seed_contigs
 printf '### STEP 4 complete. Seed contigs generated.\n'
 
 #### STEP 5 ####
@@ -154,14 +156,16 @@ printf "STEP 7 complete. \n"
 printf "STEP 8 - Running Athena-meta"
 
 athena-meta $dir_of_files/config.json
+rm $dir_of_files/mapped_reads.idba_contigs.bam*
 
 printf "STEP 8 complete. Genome assembled."
+
 
 #### STEP 9 ####
 
 #bwa index $dir_of_files/results/olc/athena.asm.fa
 #bwa mem -C -p $dir_of_files/results/olc/athena.asm.fa $dir_of_files/interleaved_R1_R2.fastq | \
-#    samtools sort -n into_arcs.bam -
+#    samtools sort -n -o into_arcs.bam -
 
 # echo "into_arcs.bam" >> bamfiles.txt
 
