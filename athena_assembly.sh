@@ -48,6 +48,8 @@ fi
 dir_of_scripts=$(dirname "$0")
 dir_of_files=$PWD
 
+source activate athena_assembly
+
 #### STEP 1 ####
 
 # TAG THE .FASTQ FILES WITH "BC:Z:BC_SEQ" USING tag_fastq.py
@@ -80,8 +82,6 @@ for file in $dir_of_files/*.tagged.fastq
 
 printf '### STEP 2 complete. Tagged read files sorted according to barcode sequence \n'
 
-##### Separate the reads according to species???
-
 #### STEP 3 ####
 
 # MERGE THE TAGGED AND SORTED .FASTQ FILES (CREATING AN INTERLEAVED FILE) AND CONVERT IT TO .FASTA FORMAT (bbmap reformat)
@@ -93,16 +93,12 @@ rm $dir_of_files/*tagged*
 
 printf '### STEP 3 complete. read1.fastq and read2.fastq merged to interleaved file and converted to .fasta format. \n'
 
-# extension of reads using tadpole.sh (from bbmap)
-
 #### STEP 4 ####
 
 # RUN IDBA TO ASSEMBLE SEED CONTIGS
 printf "### STEP 4 - Initiating assembly of seed contigs \n"
 
 mkdir idba_seed_contigs
-
-# Can use idba_ud or spades (idba_ud seems to work better though)
 
 idba_ud -r $dir_of_files/interleaved_R1_R2.fasta -o idba_seed_contigs
 
@@ -125,8 +121,6 @@ bwa mem -C -p $dir_of_files/contig.fa $dir_of_files/interleaved_R1_R2.fastq | \
 printf 'STEP 5.2 complete. Reads mapped to seed contigs.\n'
 printf '### STEP 5 complete.\n'
 
-# REMOVE DUPLICATES (rmdup + mkdup + tobbes script)
-
 #### STEP 6 ####
 
 # must make index of the .bam file in order for it to work.
@@ -139,12 +133,12 @@ printf "STEP 6 complete. .bai file generated \n"
 printf "STEP 7 - Generating config.json file \n"
 
 echo -e "{" >> config.json
-echo -e	"\t "ctgfasta_path" : \t "$dir_of_files/contig.fa"," >> config.json
-echo -e	"\t "reads_ctg_bam_path":  "$dir_of_files/mapped_reads.idba_contigs.bam","  >> config.json
-echo -e	"\t "input_fqs":            "$dir_of_files/interleaved_R1_R2.fastq"," >> config.json
-echo -e	"\t "cluster_settings":  {" >> config.json
-echo -e "\t\t "cluster_type": "multiprocessing"," >> config.json
-echo -e	"\t\t "processes":" 4 >> config.json
+echo -e	"\t \"ctgfasta_path\" : \t \"$dir_of_files/contig.fa\"," >> config.json
+echo -e	"\t \"reads_ctg_bam_path\":  \"$dir_of_files/mapped_reads.idba_contigs.bam\","  >> config.json
+echo -e	"\t \"input_fqs\":            \"$dir_of_files/interleaved_R1_R2.fastq\"," >> config.json
+echo -e	"\t \"cluster_settings\":  {" >> config.json
+echo -e "\t\t \"cluster_type\": \"multiprocessing\"," >> config.json
+echo -e	"\t\t \"processes\":" 4 >> config.json
 echo -e	"\t}" >> config.json
 echo -e  "}" >> config.json
 
@@ -156,7 +150,6 @@ printf "STEP 7 complete. \n"
 printf "STEP 8 - Running Athena-meta"
 
 athena-meta $dir_of_files/config.json
-rm $dir_of_files/mapped_reads.idba_contigs.bam*
 
 printf "STEP 8 complete. Genome assembled."
 
