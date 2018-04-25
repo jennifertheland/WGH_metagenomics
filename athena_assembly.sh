@@ -109,49 +109,49 @@ printf '### STEP 4 complete. Seed contigs generated.\n'
 #### STEP 5 ####
 
 # RUN BWA MEM TO MAP THE READ CLOUDS TO THE ASSEMBLED CONTIGS
-printf "### STEP 5 - Initiating BWA alignment\n"
-bwa index $dir_of_files/contig.fa
-samtools faidx $dir_of_files/contig.fa
-
-printf 'STEP 5.1 complete. BWA indexes generated.\n'
-
-bwa mem -C -p $dir_of_files/contig.fa $dir_of_files/interleaved_R1_R2.fastq | \
-    samtools sort -o mapped_reads.idba_contigs.bam -
-
-printf 'STEP 5.2 complete. Reads mapped to seed contigs.\n'
-printf '### STEP 5 complete.\n'
-
-#### STEP 6 ####
-
-# must make index of the .bam file in order for it to work.
-printf "STEP 6 - Generating .bai file \n"
-samtools index mapped_reads.idba_contigs.bam mapped_reads.idba_contigs.bam.bai
-printf "STEP 6 complete. .bai file generated \n"
-#### STEP 7 ####
-# GENERATE CONFIG.JSON FILE
-
-printf "STEP 7 - Generating config.json file \n"
-
-echo -e "{" >> config.json
-echo -e	"\t \"ctgfasta_path\" : \t \"$dir_of_files/contig.fa\"," >> config.json
-echo -e	"\t \"reads_ctg_bam_path\":  \"$dir_of_files/mapped_reads.idba_contigs.bam\","  >> config.json
-echo -e	"\t \"input_fqs\":            \"$dir_of_files/interleaved_R1_R2.fastq\"," >> config.json
-echo -e	"\t \"cluster_settings\":  {" >> config.json
-echo -e "\t\t \"cluster_type\": \"multiprocessing\"," >> config.json
-echo -e	"\t\t \"processes\":" 4 >> config.json
-echo -e	"\t}" >> config.json
-echo -e  "}" >> config.json
-
-printf "STEP 7 complete. \n"
-
-#### STEP 8 ####
-# RUN ATHENA
-
-printf "STEP 8 - Running Athena-meta"
-
-athena-meta $dir_of_files/config.json
-
-printf "STEP 8 complete. Genome assembled."
+#printf "### STEP 5 - Initiating BWA alignment\n"
+#bwa index $dir_of_files/contig.fa
+#samtools faidx $dir_of_files/contig.fa
+#
+#printf 'STEP 5.1 complete. BWA indexes generated.\n'
+#
+#bwa mem -C -p $dir_of_files/contig.fa $dir_of_files/interleaved_R1_R2.fastq | \
+#    samtools sort -o mapped_reads.idba_contigs.bam -
+#
+#printf 'STEP 5.2 complete. Reads mapped to seed contigs.\n'
+#printf '### STEP 5 complete.\n'
+#
+##### STEP 6 ####
+#
+## must make index of the .bam file in order for it to work.
+#printf "STEP 6 - Generating .bai file \n"
+#samtools index mapped_reads.idba_contigs.bam mapped_reads.idba_contigs.bam.bai
+#printf "STEP 6 complete. .bai file generated \n"
+##### STEP 7 ####
+## GENERATE CONFIG.JSON FILE
+#
+#printf "STEP 7 - Generating config.json file \n"
+#
+#echo -e "{" >> config.json
+#echo -e	"\t \"ctgfasta_path\" : \t \"$dir_of_files/contig.fa\"," >> config.json
+#echo -e	"\t \"reads_ctg_bam_path\":  \"$dir_of_files/mapped_reads.idba_contigs.bam\","  >> config.json
+#echo -e	"\t \"input_fqs\":            \"$dir_of_files/interleaved_R1_R2.fastq\"," >> config.json
+#echo -e	"\t \"cluster_settings\":  {" >> config.json
+#echo -e "\t\t \"cluster_type\": \"multiprocessing\"," >> config.json
+#echo -e	"\t\t \"processes\":" 4 >> config.json
+#echo -e	"\t}" >> config.json
+#echo -e  "}" >> config.json
+#
+#printf "STEP 7 complete. \n"
+#
+##### STEP 8 ####
+## RUN ATHENA
+#
+#printf "STEP 8 - Running Athena-meta"
+#
+#athena-meta $dir_of_files/config.json
+#
+#printf "STEP 8 complete. Genome assembled."
 
 
 #### STEP 9 ####
