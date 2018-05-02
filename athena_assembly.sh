@@ -54,57 +54,57 @@ source activate athena_assembly
 
 # TAG THE .FASTQ FILES WITH "BC:Z:BC_SEQ" USING tag_fastq.py
 
-#printf "### STEP 1 - Tagging initiated \n"
-#
-#for file in $ARG1 $ARG2;
-#    do
-#    name_ext=$(basename "$file")
-#    printf 'Tagging %s \n' "$name_ext"
-#    name="${name_ext%.*}"
-#    python3 $dir_of_scripts/python_scripts/tag_fastq.py $file $ARG3 $name".tagged.fastq";
-#    done;
-#
-#printf '### STEP 1 complete. Read files tagged with BC:Z:BC_SEQ \n'
-#
-##### STEP 2 ####
-#
-## SORT THE FILE ACCORDING TO BC_SEQ
-#
-#printf "### STEP2 - Sorting initiated \n"
-#
-#for file in $dir_of_files/*.tagged.fastq
-#    do
-#    name_ext=$(basename "$file")
-#    printf "Sorting %s \n" "$name_ext"
-#    name="${name_ext%.*}"
-#    bash $dir_of_scripts/sort_file.sh $file $name".sorted.fastq";
-#    done;
-#
-#printf '### STEP 2 complete. Tagged read files sorted according to barcode sequence \n'
-#
-##### STEP 3 ####
-#
-## MERGE THE TAGGED AND SORTED .FASTQ FILES (CREATING AN INTERLEAVED FILE) AND CONVERT IT TO .FASTA FORMAT (bbmap reformat)
-#
-#reformat.sh in1=$dir_of_files/$name1.tagged.sorted.fastq in2=$dir_of_files/$name2.tagged.sorted.fastq out=$dir_of_files/interleaved_R1_R2.fastq
-#reformat.sh in=$dir_of_files/interleaved_R1_R2.fastq out=$dir_of_files/interleaved_R1_R2.fasta
-#
-#rm $dir_of_files/*tagged*
-#
-#printf '### STEP 3 complete. read1.fastq and read2.fastq merged to interleaved file and converted to .fasta format. \n'
-#
-##### STEP 4 ####
-#
-## RUN IDBA TO ASSEMBLE SEED CONTIGS
-#printf "### STEP 4 - Initiating assembly of seed contigs \n"
-#
-#mkdir idba_seed_contigs
-#
-#idba_ud -r $dir_of_files/interleaved_R1_R2.fasta -o idba_seed_contigs
-#
-#cp $dir_of_files/idba_seed_contigs/contig.fa $dir_of_files
-#rm -rf $dir_of_files/idba_seed_contigs
-#printf '### STEP 4 complete. Seed contigs generated.\n'
+printf "### STEP 1 - Tagging initiated \n"
+
+for file in $ARG1 $ARG2;
+    do
+    name_ext=$(basename "$file")
+    printf 'Tagging %s \n' "$name_ext"
+    name="${name_ext%.*}"
+    python3 $dir_of_scripts/python_scripts/tag_fastq.py $file $ARG3 $name".tagged.fastq";
+    done;
+
+printf '### STEP 1 complete. Read files tagged with BC:Z:BC_SEQ \n'
+
+#### STEP 2 ####
+
+# SORT THE FILE ACCORDING TO BC_SEQ
+
+printf "### STEP2 - Sorting initiated \n"
+
+for file in $dir_of_files/*.tagged.fastq
+    do
+    name_ext=$(basename "$file")
+    printf "Sorting %s \n" "$name_ext"
+    name="${name_ext%.*}"
+    bash $dir_of_scripts/sort_file.sh $file $name".sorted.fastq";
+    done;
+
+printf '### STEP 2 complete. Tagged read files sorted according to barcode sequence \n'
+
+#### STEP 3 ####
+
+# MERGE THE TAGGED AND SORTED .FASTQ FILES (CREATING AN INTERLEAVED FILE) AND CONVERT IT TO .FASTA FORMAT (bbmap reformat)
+
+reformat.sh in1=$dir_of_files/$name1.tagged.sorted.fastq in2=$dir_of_files/$name2.tagged.sorted.fastq out=$dir_of_files/interleaved_R1_R2.fastq
+reformat.sh in=$dir_of_files/interleaved_R1_R2.fastq out=$dir_of_files/interleaved_R1_R2.fasta
+
+rm $dir_of_files/*tagged*
+
+printf '### STEP 3 complete. read1.fastq and read2.fastq merged to interleaved file and converted to .fasta format. \n'
+
+#### STEP 4 ####
+
+# RUN IDBA TO ASSEMBLE SEED CONTIGS
+printf "### STEP 4 - Initiating assembly of seed contigs \n"
+
+mkdir idba_seed_contigs
+
+idba_ud -r $dir_of_files/interleaved_R1_R2.fasta -o idba_seed_contigs
+
+cp $dir_of_files/idba_seed_contigs/contig.fa $dir_of_files
+rm -rf $dir_of_files/idba_seed_contigs
+printf '### STEP 4 complete. Seed contigs generated.\n'
 
 #### STEP 5 ####
 
