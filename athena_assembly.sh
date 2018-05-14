@@ -10,7 +10,7 @@ do
 	    echo 'Usage: bash athena_assembly.sh <r1_trimmed.fq> <r2_trimmed.fq> <NNN.clstr> <output_dir>'
 	    echo ''
 	    echo "Positional arguments (required)"
-	    echo "  <r1_trimmed.fq>         Read one in .fastq format. The reads shold be trimmed with the barcode in the header. "
+	    echo "  <r1_trimmed.fq>         R1 in .fq format. Trimmed with the barcode in the header. "
 	    echo "  <r2_trimmed.fq>         Read two in .fastq format. The reads should be trimmed with the barcode in the header."
 	    echo "  <NNN.clstr>     Concatenated .clstr file with all barcode clusters."
 	    echo "  <output_dir>    Output directory holding all assembly files."
@@ -48,7 +48,7 @@ fi
 dir_of_scripts=$(dirname "$0")
 dir_of_files=$PWD
 
-source activate athena_assembly
+#source activate athena_assembly
 
 #### STEP 1 ####
 
