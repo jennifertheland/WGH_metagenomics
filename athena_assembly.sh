@@ -145,27 +145,45 @@ echo -e  "}" >> config.json
 printf "STEP 7 complete. \n"
 
 #### STEP 8 ####
+
 # RUN ATHENA
 
-printf "STEP 8 - Running Athena-meta"
+printf "STEP 8 - Running Athena-meta \n"
 
 athena-meta $dir_of_files/config.json
 
-printf "STEP 8 complete. Genome assembled."
+printf "STEP 8 complete. Genome assembled.\n"
 
 
 #### STEP 9 ####
 
-#bwa index $dir_of_files/results/olc/athena.asm.fa
-#bwa mem -C -p $dir_of_files/results/olc/athena.asm.fa $dir_of_files/interleaved_R1_R2.fastq | \
-#    samtools sort -n -o into_arcs.bam -
+# RUN ARCS AND LINKS
 
-# echo "into_arcs.bam" >> bamfiles.txt
+printf "STEP 9.1 - Aligning linked-reads to the assembled genome \n"
 
-# arcs -f $dir_of_files/results/olc/athena.asm.fa -a bamfiles.txt -s 98 -c 5 -l 0 -z 500 -m 50-1000 -d 0 -e 1000 -r 0.05
+bwa index $dir_of_files/results/olc/athena.asm.fa
+bwa mem -C -p $dir_of_files/results/olc/athena.asm.fa $dir_of_files/interleaved_R1_R2.fastq | \
+    samtools sort -n -o into_arcs.bam -
 
+echo "into_arcs.bam" >> bamfiles.txt
 
-# graph=athena.asm.fa.scaff_s98_c5_l0_d0_e1000_r0.05_original.gv
+printf "STEP 9.1 complete. \n"
 
-# python $dir_of_scripts/python_scripts/makeTSVfile.py $graph athena.asm.fa.c5_e1000_r0.05.tigpair_checkpoint.tsv $dir_of_files/results/olc/athena.asm.fa
+printf "STEP 9.2 - Running arcs \n"
 
+arcs -f $dir_of_files/results/olc/athena.asm.fa -a bamfiles.txt -s 98 -c 5 -l 0 -z 500 -m 50-1000 -d 0 -e 5000 -r 0.05
+
+graph=athena.asm.fa.scaff_s98_c5_l0_d0_e1000_r0.05_original.gv
+
+python $dir_of_scripts/python_scripts/makeTSVfile.py $graph athena.asm.fa.c5_e1000_r0.05.tigpair_checkpoint.tsv $dir_of_files/results/olc/athena.asm.fa
+
+printf "STEP 9.2 complete.\n"
+
+printf "STEP 9.3 - Running LINKS \n"
+
+touch empty.fof
+
+LINKS -f $dir_of_files/results/olc/athena.asm.fa -s empty.fof -k 20 -b athena.asm.fa.c5_e30000_r0.05 -l 5 -t 2 -a 0.3
+
+printf "STEP 9.3 complete. \n"
+printf "STEP 9 complete. Scaffolding done.\n"
