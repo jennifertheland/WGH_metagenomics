@@ -27,6 +27,27 @@ First, download this GitHub repository by writing the cloning command in your te
 git clone https://github.com/jennifertheland/BLR_metagenomics.git
 ```
 
+Also make sure your IDBA-UD installation can work on 150 bp read constructs by changing the kMaxShortSequence to
+200 bases in the short_sequences.h file located in your idba folder under.
+
+```
+idba/src/sequence/short_sequence.h
+
+```
+Change line 102
+
+```
+static const uint32_t kMaxShortSequence = 128;
+
+```
+To this:
+
+```
+static const uint32_t kMaxShortSequence = 200;
+```
+
+After changing the line, remember to rebuild your IDBA installation.
+
 ## Useage
 
 The main script to run the pipeline is athena_assembly.sh, for available options, see -h (--help) and for more 
@@ -57,5 +78,5 @@ BC.clstr
 To run the pipeline, write the following to yield an output folder with the results in.
 
 ```
-bash athena_assembly.sh -m john.doe@myworkplace.com -p <processors> -m  <read1.trimmed.fq.gz> <read2.trimmed.fq.gz> <BC.NNN.clstr> <output>
+bash BLR_metagenomics.sh -m john.doe@myworkplace.com -p <processors> -m  <read1.trimmed.fq.gz> <read2.trimmed.fq.gz> <BC.NNN.clstr> <output>
 ```
