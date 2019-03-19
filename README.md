@@ -105,7 +105,7 @@ bash BLR_metagenomics.sh -o <lib2.read1.trim.fq> <lib2.read2.trim.fq> <BC.NNN.cl
 Now combine the libraries using the multilib_combiner.py script found in the python_scripts folder.
 
 ```
-python3 python\ scripts/multilib_combiner.py <lib1_out/read1.tag.fq> <lib1_out/read2.tag.fq> <lib2_out/read1.tag.fq> <lib2_out/read2.tag.fq> -r1 <comb.read1.tag.fq> -r2 <comb.read2.tag.fq>
+python3 python_scripts/multilib_combiner.py <lib1_out/read1.tag.fq> <lib1_out/read2.tag.fq> <lib2_out/read1.tag.fq> <lib2_out/read2.tag.fq> -r1 <comb.read1.tag.fq> -r2 <comb.read2.tag.fq>
 ```
 
 Lastly run the automation script with the -m (multiple libraries) flag.
