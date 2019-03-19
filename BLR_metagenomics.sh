@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
 
 processors=1
+single_lib=true
+only_tag=false
 
-while getopts "hp:" OPTION
+while getopts "hp:mo" OPTION
 do
     case ${OPTION} in
         p)
            processors=${OPTARG}
+           ;;
+        o)
+           only_tag=true
+           ;;
+        m)
+           single_lib=false
            ;;
         h)
             echo ''
@@ -22,7 +30,9 @@ do
 	    echo ""
 	    echo "Optional arguments"
 	    echo "  -h  help (this output)"
-	    echo '  -p <processors>     DEFAULT: 1'
+	    echo '  -p  <processors>        DEFAULT: 1'
+	    echo '  -o  omit tagging        DEFAULT: false'
+	    echo '  -m  multiple libraries  DEFAULT: false'
 	    exit 0
 	       ;;
     esac
@@ -67,22 +77,44 @@ path=$(dirname "$0") &&
 printf '\n0. Argparsing & options' &&
 printf '\nRead 1:\t'$ARG1'\nRead 2:\t'$ARG2'\nBCs:\t'$ARG3'\nOutput:\t'$ARG4'\n' &&
 
+#
+# # # END OF PARSING & SETUP
+#
 
 # START OF PROCESS #
-printf 'BLR_metagenomics starting\n' &&
+printf '\nBLR_metagenomics starting\n' &&
 mkdir -p $output &&
 #cd $output &&
 
 ### 1. READ PROCESSING ###
-printf "### STEP 1 - Read processing \n" &&
 
-# tag fastq files with clustered bc information
-python3 $path/python_scripts/tag_fastq.py \
-    $ARG1 \
-    $ARG2 \
-    $ARG3 \
-    $file_name1'.tag.fastq' \
-    $file_name2'.tag.fastq' &&
+# If multiple libraries are run, don't tag (should be done prior, manually)
+if $single_lib
+then
+    printf "\n### STEP 1 - Read processing \n" &&
+    # tag fastq files with clustered bc information
+    python3 $path/python_scripts/tag_fastq.py \
+        $ARG1 \
+        $ARG2 \
+        $ARG3 \
+        $file_name1'.tag.fastq' \
+        $file_name2'.tag.fastq'
+else
+    echo ''
+    echo '!!! UNSATBLE SOLUTION: Copying inputs so pipeline finds the pre-tagged read files.'
+    echo ''
+    cp $ARG1 $file_name1'.tag.fastq'
+    cp $ARG2 $file_name2'.tag.fastq'
+    printf "### STEP 1 - Read processing \n" &&
+    printf "Multiple library option active - omitting tagging step (should be done prior with -o option) \n"
+fi
+
+# If running multiple libraries, should stop here after tagging to combine libraries.
+if $only_tag
+then
+    printf "\n### ONLY TAG OPTION ACTIVE - EXITING ###\n\n"
+    exit
+fi
 
 # sort and convert to itlvd fq
 python3 $path/python_scripts/sort_tagged_fastq.py \
@@ -136,7 +168,7 @@ printf  \
 
 athena-meta $output'/config.json'
 
-
+printf '### STEP 3 - Assembly of read clouds done\n'
 
 # scripts
 
@@ -151,15 +183,6 @@ athena-meta $output'/config.json'
 #printf 'BLR_metagenomics FINISHED\n' &&
 
 #cd -
-
-
-
-
-
-
-
-
-
 
 
 #printf "### STEP 4 - Initiating assembly of seed contigs \n"

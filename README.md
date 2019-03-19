@@ -78,5 +78,38 @@ BC.clstr
 To run the pipeline, write the following to yield an output folder with the results in.
 
 ```
-bash BLR_metagenomics.sh -m john.doe@myworkplace.com -p <processors> -m  <read1.trimmed.fq.gz> <read2.trimmed.fq.gz> <BC.NNN.clstr> <output>
+bash BLR_metagenomics.sh -m john.doe@myworkplace.com -p <processors> <read1.trimmed.fq.gz> <read2.trimmed.fq.gz> <BC.NNN.clstr> <output>
+```
+
+## Advanced usage: Combine multiple libries
+
+Start by running the pre-processing (see above) for all your libraries separately (the example shows two libraries but it 
+can be done for any number of libraries).
+
+```
+# Library 1
+bash BLR_automation.sh -e 2 -m john.doe@myworkplace.com -p <processors> -r <read1.fq> <read2.fq> <read_processing_folder>
+# Library 2
+bash BLR_automation.sh -e 2 -m john.doe@myworkplace.com -p <processors> -r <read1.fq> <read2.fq> <read_processing_folder>
+```
+
+Proceed by tagging all libraries with error corrected barcodes by using the -o (only tag) flag. 
+
+```
+# Library 1
+bash BLR_metagenomics.sh -o <lib1.read1.trim.fq> <lib1.read2.trim.fq> <BC.NNN.clstr> <lib1_out>
+# Library 2
+bash BLR_metagenomics.sh -o <lib2.read1.trim.fq> <lib2.read2.trim.fq> <BC.NNN.clstr> <lib2_out>
+```
+
+Now combine the libraries using the multilib_combiner.py script found in the python_scripts folder.
+
+```
+python3 python\ scripts/multilib_combiner.py <lib1_out/read1.tag.fq> <lib1_out/read2.tag.fq> <lib2_out/read1.tag.fq> <lib2_out/read2.tag.fq> -r1 <comb.read1.tag.fq> -r2 <comb.read2.tag.fq>
+```
+
+Lastly run the automation script with the -m (multiple libraries) flag.
+
+```
+bash BLR_metagenomics.sh -m <comb.read1.tag.fq> <comb.read2.tag.fq> <BC.NNN.clstr> <lib1_out>
 ```
