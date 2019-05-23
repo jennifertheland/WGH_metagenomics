@@ -17,7 +17,7 @@ do
            single_lib=false
            ;;
         h)
-            echo ''
+        echo ''
 	    echo 'This script processes paried read metagenomics data and performs de novo whole genome assembly..'
 	    echo ""
 	    echo 'Usage: bash BLR_metagenomics.sh <r1_trimmed.fq> <r2_trimmed.fq> <NNN.clstr> <output_dir>'
@@ -169,7 +169,6 @@ printf  \
 athena-meta $output'/config.json'
 
 printf '### STEP 3 - Assembly of read clouds done\n'
-
 # scripts
 
 #printf '### STEP 3 - Assembly of read clouds complete\n' &&
