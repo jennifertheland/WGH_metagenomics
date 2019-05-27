@@ -132,7 +132,7 @@ printf '### STEP 1 - Read processing complete\n'
 ### 2. READ CLOUD PRE-PROCESSING (make contig, map reads to contigs) ###
 printf '### STEP 2 - Read cloud pre-processing\n'
 
-idba idba_ud \
+idba_ud \
     -r $file_name1'.tag.sort.itlvd.fasta' \
     $file_name1'.preprocessing_assembly'
 
