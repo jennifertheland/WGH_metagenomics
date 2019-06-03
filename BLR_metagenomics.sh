@@ -167,7 +167,7 @@ printf  \
     }
 }' > $output'/config.json'
 
-athena-meta $output'/config.json'
+athena-meta --config $output'/config.json'
 
 printf '### STEP 3 - Assembly of read clouds done\n'
 # Run flye
